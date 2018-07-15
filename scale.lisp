@@ -67,9 +67,9 @@
 
 (defun pq (note scale)
   (let ((octave (+ 12 (car scale))))
-    (when (> octave (last-elt scale))
+    (when (> octave (alexandria:last-elt scale))
       (setf scale (append scale (list octave)))))
-  (let* ((rescale-value (* 12 (ceiling (/ (- note (last-elt scale)) 12.0))))
+  (let* ((rescale-value (* 12 (ceiling (/ (- note (alexandria:last-elt scale)) 12.0))))
 	 (rescale-note (- note rescale-value)))
     (+ rescale-value
        (loop for n in (reverse scale)

@@ -117,7 +117,7 @@
 							 ,(if (and (listp v) (not (symbolp (car v))))
 							      (cons 'list v)
 							    v))))))
-		      collect (mix (let ,(mapcar (lambda (n v) (list n `(ensure-list ,(car v))))
+		      collect (mix (let ,(mapcar (lambda (n v) (list n `(alexandria:ensure-list ,(car v))))
 					  names (cdr grid))
 				     magic-number
 				     (let ((,length (apply #'max (mapcar #'length (list
@@ -157,6 +157,6 @@
 					   ,(if (third x)
 						`(select.kr (gate.kr 1 ,gate) [,(third x) ,sel])
 					      `,sel)))))
-	 (declare (ignorable ,@(mapcar #'first grid)))
+	 (declare (ignorable ,@(mapcar #'first (cdr grid))))
 	 ,@body))))
 

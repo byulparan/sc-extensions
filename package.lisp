@@ -2,7 +2,6 @@
   (:use #:cl #:sc)
   (:export #:define-code
 	   
-	   #:tempo-mode
 	   #:tr
 	   #:cnt
 	   #:gate-lane

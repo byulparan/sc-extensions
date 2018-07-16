@@ -34,6 +34,9 @@
     (progn
       (unless *counter-group*
 	(setf *counter-group* (make-group :to 0 :pos :head)))
+      (when (find 900 (sc::node-watcher *s*))
+	(free 900)
+	(sync *s*))
       (proxy :tempo
 	(with-controls ((bpm bpm) (lag 0.0) (reset 0 :tr))
 	  (let* ((bpm (var-lag.kr bpm lag))
@@ -42,6 +45,7 @@
 	    (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 3) tick)
 	    (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 2) (/ 60.0 bpm))
 	    (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 1) count)))
+	:id 900
 	:to *counter-group*))))
 
 ;;; ==================================================================================================================

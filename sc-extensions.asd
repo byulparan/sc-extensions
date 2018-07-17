@@ -7,4 +7,4 @@
 	       (:file "util")
 	       (:file "tempo")
 	       (:file "ugens")
-	       (:file "scale")))
+	       (:file "pc")))

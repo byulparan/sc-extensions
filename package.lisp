@@ -15,7 +15,6 @@
 	   #:pattern-at
 	   #:with-grid-poly
 	   #:with-grid
-
 	   
 	   #:poly
 	   #:rand-tr
@@ -27,9 +26,17 @@
 	   #:del.kr
 	   #:asr.kr
 	   #:sel-pos.kr
-	   #:proxy-handle
+	   #:proxy-handle))
 
+(defpackage #:pc
+  (:use #:cl)
+  (:export #:quantize
+	   #:relative
+	   #:make-chord
+	   #:degree
+	   #:quantize-list
+	   #:transpose
 	   #:scale
+	   #:chord-to-scale
 	   #:chord
-	   #:inversion
-	   #:pq))
+	   #:diatonic))

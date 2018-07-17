@@ -1,8 +1,8 @@
 # sc-extensions
 
-A <a href="https://github.com/byulparan/cl-collider">cl-collider</a> additional library collection. 
-this include server-side-sequencing tool / scale library / alias ugens.
-
+A <a href="https://github.com/byulparan/cl-collider">cl-collider</a> additional library collection.   
+this include server-side-sequencing tool / alias ugens.  
+and it implements 'pc' library from Andrew Sorensen's [Extempore](http://digego.github.io/extempore/index.html)  
 
 ## Usage:
 
@@ -23,7 +23,6 @@ this include server-side-sequencing tool / scale library / alias ugens.
 (tempo 60.0)
 (server-query-all-nodes) ;; You can look nodes state on scsynth server
 
-
 ;; run synth
 (proxy :foo
   (pan2.ar (sin-osc.ar 440 0 (env-gen.kr (perc .0 .4 .2) :gate (tr 4)))))  ;; trigger on every 1/16 beat
@@ -37,14 +36,16 @@ this include server-side-sequencing tool / scale library / alias ugens.
 
 ;;; chord progression every 8 beat 
 (proxy :foo
-  (pan2.ar (mix (sin-osc.ar (midicps (sel-pos.kr 1 8 [(chord :c4 :maj7) (chord :a3 :min7)])) 0
-			    (env-gen.kr (perc .0 .4 .2) :gate (tr 8))))))
+  (pan2.ar (mix (sin-osc.ar (midicps (sel-pos.kr 1 8 [(pc:make-chord 40 80 4 (pc:diatonic 0 :^ :i7))
+						      (pc:make-chord 40 80 4 (pc:diatonic 0 :^ :vi7))]))
+			    0 (env-gen.kr (perc .0 .4 .2) :gate (tr 8))))))
 
 ;;; modified to gate
 (proxy :foo
   (let* ((gate (g+ 4 8 [0 3 6])))
-    (pan2.ar (mix (sin-osc.ar (midicps (sel-pos.kr 1 8 [(chord :c4 :maj7) (chord :a3 :min7)])) 0
-			      (env-gen.kr (perc .0 .4 .2) :gate gate))))))
+    (pan2.ar (mix (sin-osc.ar (midicps (sel-pos.kr 1 8 [(pc:make-chord 40 80 4 (pc:diatonic 0 :^ :i7))
+							(pc:make-chord 40 80 4 (pc:diatonic 0 :^ :vi7))]))
+			      0 (env-gen.kr (perc .0 .4 .2) :gate gate))))))
 
 ;;; change tempo
 (tempo 72.0)
@@ -59,7 +60,7 @@ this include server-side-sequencing tool / scale library / alias ugens.
        (note [60 67 71])
        (decay [.4 1.0 .2]))
     (pan2.ar (sin-osc.ar (midicps note) 0
-			      (env-gen.kr (perc .0 decay .2) :gate gt)))))
+			 (env-gen.kr (perc .0 decay .2) :gate gt)))))
 
 ;;; polyphonic grid
 (proxy :foo
@@ -68,7 +69,5 @@ this include server-side-sequencing tool / scale library / alias ugens.
        (note [60 67 71]))
     (pan2.ar (mix (sin-osc.ar (midicps note) 0
 			      (env-gen.kr (perc .0 2.0 .2) :gate gt))))))
-
-
 
 ```

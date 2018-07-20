@@ -1,6 +1,6 @@
 (asdf/defsystem:defsystem #:sc-extensions
   :serial t
-  :depends-on (#:sc
+  :depends-on (#:cl-collider
 	       #:alexandria
 	       #:named-readtables)
   :components ((:file "package")

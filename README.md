@@ -1,6 +1,6 @@
 # sc-extensions
 
-A <a href="https://github.com/byulparan/cl-collider">cl-collider</a> additional library collection.   
+Additional library collection for <a href="https://github.com/byulparan/cl-collider">cl-collider</a> .   
 this include server-side-sequencing tool / alias ugens 
 and it implements `pc` library from Andrew Sorensen's [Extempore](http://digego.github.io/extempore/index.html)  
 

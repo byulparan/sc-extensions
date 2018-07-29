@@ -30,7 +30,8 @@
 
 (defpackage #:pc
   (:use #:cl)
-  (:export #:quantize
+  (:export #:pc-random
+	   #:quantize
 	   #:relative
 	   #:make-chord
 	   #:degree

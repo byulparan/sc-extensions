@@ -233,7 +233,6 @@
       (if (null choices) -1
         (alexandria:random-elt choices)))))
 
-
 (defun relative (pitch i pc)
   (setf i (round i))
   (if (= i 0) pitch
@@ -241,7 +240,7 @@
       (labels ((lp (p cnt)
 		 (if (pc? p pc) (setf cnt (funcall inc cnt 1)))
 		 (if (= cnt i) p
-		   (lp (funcall inc 1) cnt))))
+		   (lp (funcall inc p 1) cnt))))
 	(lp (funcall inc pitch 1) 0)))))
 
 

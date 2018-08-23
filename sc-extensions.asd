@@ -9,6 +9,6 @@
 	       #:named-readtables)
   :components ((:file "package")
 	       (:file "util")
-	       (:file "tempo")
+	       (:file "server-side")
 	       (:file "ugens")
 	       (:file "pc")))

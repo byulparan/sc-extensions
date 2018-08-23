@@ -9,17 +9,23 @@
 	   #:beat
 	   #:wait-when
 	   #:tempo
-
 	   #:pattern
 	   #:on-trigger
 	   #:pattern-at
 	   #:with-grid-poly
 	   #:with-grid
-	   
 	   #:poly
 	   #:rand-tr
 	   #:r+
 	   #:g+
+
+	   #:bpm
+	   #:pp
+	   #:next-mod
+	   #:rrand
+	   #:sinr
+	   #:cosr
+	   
 	   #:t-line.ar
 	   #:t-line.kr
 	   #:perc.kr

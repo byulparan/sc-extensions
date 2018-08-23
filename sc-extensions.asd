@@ -10,5 +10,6 @@
   :components ((:file "package")
 	       (:file "util")
 	       (:file "server-side")
+	       (:file "client-side")
 	       (:file "ugens")
 	       (:file "pc")))

@@ -27,8 +27,8 @@
 (define-code del.kr (in del)
   (delay-l.kr in 2.0 del))
 
-(define-code asr.kr (attk rel level gate)
-  (* level (env-gen.kr (env [0 1 0] [attk rel]) :gate gate)))
+(define-code asr.kr (attk level rel gate &key (act :no-action))
+  (env-gen.kr (asr attk level rel) :gate gate :act act))
 
 
 (defun sel-pos.kr (div len contents)

@@ -16,8 +16,10 @@
     (if no-del-p `(at-beat ,sym-beat ,arg ,@body)
       `(at-beat (+ ,sym-beat ,arg) ,@body))))
 
-(defmacro next-mod (beat new-value &optional (param 'dur))
-  `(if (zerop (mod (+ beat dur) ,beat)) ,new-value ,param))
+(defmacro next-dur (beat new-value)
+  (let ((sym-beat (alexandria:symbolicate "BEAT"))
+	(sym-dur (alexandria:symbolicate "DUR")))
+    `(if (zerop (mod (+ ,sym-beat ,sym-dur) ,beat)) ,new-value ,sym-dur)))
 
 (defun rrand (n &optional p)
   (cond (p (let* ((min (min n p))

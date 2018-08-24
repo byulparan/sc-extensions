@@ -21,7 +21,7 @@
 
 	   #:bpm
 	   #:pp
-	   #:next-mod
+	   #:next-dur
 	   #:rrand
 	   #:sinr
 	   #:cosr

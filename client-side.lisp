@@ -14,7 +14,8 @@
       (setf (getf param :dur) `(clock-tm ,dur))
       (setf body (append body (list :dur `(clock-tm ,sym-dur)))))
     (if no-del-p `(at-beat ,sym-beat ,arg ,@body)
-      `(at-beat (+ ,sym-beat ,arg) ,@body))))
+      `(let ((,sym-beat (+ ,sym-beat ,arg)))
+	 (at-beat ,sym-beat ,@body)))))
 
 (defmacro next-dur (beat new-value)
   (let ((sym-beat (alexandria:symbolicate "BEAT"))

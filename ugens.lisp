@@ -34,7 +34,6 @@
 (defun sel-pos.kr (div len contents)
   (sc:select.kr (sc::mod~ (sc::floor~ (sc::/~ (cnt div) len)) (length contents)) contents))
 
-
 (defmacro proxy-handle (key &optional action handle (to 1))
   (let* ((name (format nil "~a-HANDLE" (string-upcase key)))
 	 (cmd (format nil "/~a" name))
@@ -49,9 +48,10 @@
 				(if (zerop fract) v (+ v fract)))))
 		       (apply func (mapcar #'float-to-int (cddr args))))))
 		  (proxy ,key
-		    (destructuring-bind (trig &rest values)
-			,action
-		      (send-reply.kr trig ,cmd values))
+		    (let ((result ,action))
+		      (destructuring-bind (trig &rest values)
+			result
+		      (send-reply.kr trig ,cmd values)))
 		    :to ,to
 		    :fade .0))
       `(proxy ,key))))

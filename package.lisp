@@ -16,6 +16,7 @@
 	   #:with-grid
 	   #:poly
 	   #:rand-tr
+	   #:safe-tr
 	   #:r+
 	   #:g+
 

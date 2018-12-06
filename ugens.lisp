@@ -9,8 +9,8 @@
   (let* ((trg (tr div)))
     (* trg (> odds (t-rand.kr .0 1.0 trg)))))
 
-(define-code safe-tr (div)
-  (let* ((trg (tr div))
+(define-code safe-tr (tr)
+  (let* ((trg tr)
 	 (sel (gate.kr 1 trg)))
     (select.kr sel [1 trg])))
 

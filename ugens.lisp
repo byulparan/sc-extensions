@@ -5,9 +5,8 @@
   (* gate (== 0 (mod (+ (loop for i from 0 below n collect i)
 			(pulse-count.kr gate)) n))))
 
-(define-code rand-tr (div odds)
-  (let* ((trg (tr div)))
-    (* trg (> odds (t-rand.kr .0 1.0 trg)))))
+(define-code rand-tr (tr odds)
+  (* tr (> odds (t-rand.kr .0 .9999 tr))))
 
 (define-code safe-tr (tr)
   (let* ((trg tr)

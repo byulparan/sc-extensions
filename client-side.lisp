@@ -11,16 +11,23 @@
     (alexandria:with-gensyms (name)
       `(let* ((,name ,arg))
 	 (if (numberp ,name) (let ((,sym-beat (+ ,sym-beat ,name)))
-			       (at-beat ,sym-beat ,@(progn (alexandria:if-let ((dur (getf (cdr body) :dur)))
-							     (cons (car body)
-								   (append
-								    (alexandria:remove-from-plist (cdr body) :dur)
-								    (list :dur `(clock-tm ,dur))))
-							     (append body (list :dur `(clock-tm ,sym-dur)))))))
-	   (at-beat ,sym-beat ,name  ,@(progn (alexandria:if-let ((dur (getf body :dur)))
-						(append (alexandria:remove-from-plist body :dur)
-							(list :dur `(clock-tm ,dur)))
-						(append body (list :dur `(clock-tm ,sym-dur)))))))))))
+			       (at-beat ,sym-beat
+				 (let* ((,name ,(car body)))
+				   (apply (if (keywordp ,name) #'ctrl #'synth)
+					  ,name
+					  (list
+					   ,@(progn (alexandria:if-let ((dur (getf (cdr body) :dur)))
+						      (append
+						       (alexandria:remove-from-plist (cdr body) :dur)
+						       (list :dur `(clock-tm ,dur)))
+						      (append (cdr body) (list :dur `(clock-tm ,sym-dur))))))))))
+	   (at-beat ,sym-beat
+	     (apply (if (keywordp ,name) #'ctrl #'synth) ,name
+		      (list
+		       ,@(progn (alexandria:if-let ((dur (getf body :dur)))
+				 (append (alexandria:remove-from-plist body :dur)
+					 (list :dur `(clock-tm ,dur)))
+				 (append body (list :dur `(clock-tm ,sym-dur)))))))))))))
 
 (defmacro next-dur (beat new-value)
   (let ((sym-beat (alexandria:symbolicate "BEAT"))

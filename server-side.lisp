@@ -34,7 +34,7 @@
     (progn
       (unless *counter-group*
 	(setf *counter-group* (make-group :to 0 :pos :head)))
-      (when (find 900 (sc::node-watcher *s*))
+      (when (sc:is-playing-p 900)
 	(free 900)
 	(sync *s*))
       (proxy :tempo

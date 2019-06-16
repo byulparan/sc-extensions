@@ -8,6 +8,7 @@
 	   #:div
 	   #:beat
 	   #:wait-when
+	   #:metro
 	   #:tempo
 	   #:pattern
 	   #:on-trigger

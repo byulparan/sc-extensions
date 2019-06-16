@@ -3,18 +3,33 @@
 ;;; ==================================================================================================================
 ;;;
 (defvar *max-beat* 96)
+(defvar *tr-function* nil)
+(defvar *cnt-function* nil)
+(defvar *gate-lane-function* nil)
 
-(define-code tr (div)
+(define-code metro-tr (div)
   (sc::*~ (== 0 (sc::floor~ (sc::mod~ (in.kr (1- (sc::server-options-num-control-bus (server-options *s*))))
 					 (sc::/~ *max-beat* div))))
 	      (in.kr (- (sc::server-options-num-control-bus (server-options *s*)) 3))))
 
-(define-code cnt (div)
+(defun tr (div)
+  (if *tr-function* (funcall *tr-function* div)
+    (metro-tr div)))
+
+(define-code metro-cnt (div)
   (sc::floor~ (sc::/~ (in.kr (1- (sc::server-options-num-control-bus (server-options *s*))))
 			  (sc::/~ *max-beat* div))))
 
-(defmacro gate-lane (div n seqs)
-  `(mix (sc::*~ (tr ,div) (sc:dup (lambda (s) (== s (sc::mod~ (cnt ,div) ,n))) ,seqs))))
+(defun cnt (div)
+  (if *cnt-function* (funcall *cnt-function* div)
+    (metro-cnt div)))
+
+(define-code metro-gate-lane (div n seqs)
+  (mix (sc::*~ (tr div) (sc:dup (lambda (s) (== s (sc::mod~ (cnt div) n))) seqs))))
+
+(defun gate-lane (div n seqs)
+  (if *gate-lane-function* (funcall *gate-lane-function* div n seqs)
+    (metro-gate-lane div n seqs)))
 
 (define-code div (n)
   (/ (in.kr (- (sc::server-options-num-control-bus (server-options *s*)) 2)) n))
@@ -29,15 +44,15 @@
 
 (defvar *counter-group* nil)
 
-(defun tempo (bpm &key (relaunch nil) (lag 0))
-  (if (and *counter-group* (not relaunch)) (ctrl :tempo :bpm bpm :lag lag)
+(defun metro (bpm &key (relaunch nil) (lag 0))
+  (if (and *counter-group* (not relaunch)) (ctrl :metro :bpm bpm :lag lag)
     (progn
       (unless *counter-group*
 	(setf *counter-group* (make-group :to 0 :pos :head)))
       (when (sc:is-playing-p 900)
 	(free 900)
 	(sync *s*))
-      (proxy :tempo
+      (proxy :metro
 	(with-controls ((bpm bpm) (lag 0.0) (reset 0 :tr))
 	  (let* ((bpm (var-lag.kr bpm lag))
 		 (tick (impulse.kr (* (/ bpm 60.0) *max-beat*)))
@@ -47,6 +62,10 @@
 	    (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 1) count)))
 	:id 900
 	:to *counter-group*))))
+
+(defun tempo (bpm &key (relaunch nil) (lag 0))
+  (warn "`TEMPO` deprecated. use `METRO` instead.")
+  (metro bpm :relaunch relaunch :lag lag))
 
 ;;; ==================================================================================================================
 

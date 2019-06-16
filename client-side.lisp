@@ -1,9 +1,14 @@
 (in-package :sc-extensions)
 (named-readtables:in-readtable :sc)
 
+
+(defvar *bpm-functions* nil)
+
 (defun bpm (bpm &key (relaunch nil) (lag 0))
-  (tempo bpm :relaunch relaunch :lag lag)
-  (clock-bpm bpm))
+  (metro bpm :relaunch relaunch :lag lag)
+  (clock-bpm bpm)
+  (dolist (f *bpm-functions*)
+    (funcall f bpm :relaunch relaunch :lag lag)))
 
 (defmacro pp (arg &body body)
   (let* ((sym-beat (alexandria:symbolicate "BEAT"))

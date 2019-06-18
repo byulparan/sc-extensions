@@ -4,11 +4,13 @@
 
 (defvar *bpm-functions* nil)
 
-(defun bpm (bpm &key (relaunch nil) (lag 0))
-  (metro bpm :relaunch relaunch :lag lag)
-  (clock-bpm bpm)
-  (dolist (f *bpm-functions*)
-    (funcall f bpm :relaunch relaunch :lag lag)))
+(defun bpm (&optional bpm &key (relaunch nil) (lag 0))
+  (if (not bpm) (clock-bpm)
+    (progn
+      (metro bpm :relaunch relaunch :lag lag)
+      (clock-bpm bpm)
+      (dolist (f *bpm-functions*)
+	(funcall f bpm :relaunch relaunch :lag lag)))))
 
 (defmacro pp (arg &body body)
   (let* ((sym-beat (alexandria:symbolicate "BEAT"))

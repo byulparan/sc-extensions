@@ -49,8 +49,8 @@
     (progn
       (unless *counter-group*
 	(setf *counter-group* (make-group :to 0 :pos :head)))
-      (when (sc:is-playing-p 900)
-	(free 900)
+      (when (sc:is-playing-p :metro)
+	(free :metro)
 	(sync *s*))
       (proxy :metro
 	(with-controls ((bpm bpm) (lag 0.0) (reset 0 :tr))
@@ -60,7 +60,6 @@
 	    (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 3) tick)
 	    (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 2) (/ 60.0 bpm))
 	    (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 1) count)))
-	:id 900
 	:to *counter-group*))))
 
 (defun tempo (bpm &key (relaunch nil) (lag 0))

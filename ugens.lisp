@@ -19,6 +19,15 @@
 (define-code g+ (div len contents)
   (gate-lane div len contents))
 
+(define-code sel-pos.kr (div contents)
+  (select.kr (mod (floor (cnt div)) (length contents)) contents))
+
+(define-code s+ (div contents)
+  (select.kr (mod (floor (cnt div)) (length contents)) contents))
+
+(define-code t+ (tr contents)
+  (t-choose.kr tr contents))
+
 (define-code t-line.ar (start end dur gate)
   (env-gen.ar (env [0 start end] [0 dur]) :gate gate))
 
@@ -33,10 +42,6 @@
 
 (define-code asr.kr (attk level rel gate &key (act :no-action))
   (env-gen.kr (asr attk level rel) :gate gate :act act))
-
-
-(defun sel-pos.kr (div len contents)
-  (sc:select.kr (sc::mod~ (sc::floor~ (sc::/~ (cnt div) len)) (length contents)) contents))
 
 (defmacro proxy-handle (key &optional action handle (to 1))
   (let* ((name (format nil "~a-HANDLE" (string-upcase key)))

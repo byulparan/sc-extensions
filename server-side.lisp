@@ -37,10 +37,10 @@
 (define-code beat (n)
   (* (in.kr (- (sc::server-options-num-control-bus (server-options *s*)) 2)) n))
 
-(define-code wait-when (div len)
+(define-code wait-when (div)
   (let ((synth-node (gethash (intern (string-upcase sc::*temp-synth-name*) :keyword) (sc::node-proxy-table *s*))))
     (cond ((and synth-node (sc::is-playing-p synth-node)) 1)
-	  (t (latch.kr 1 (* (tr div) (== 0 (mod (cnt div) len))))))))
+	  (t (gate.kr 1 (tr div))))))
 
 (defvar *counter-group* nil)
 

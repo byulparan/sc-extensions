@@ -20,7 +20,9 @@
 	   #:safe-tr
 	   #:r+
 	   #:g+
-
+	   #:sel-pos.kr
+	   #:s+
+	   #:t+
 	   #:bpm
 	   #:pp
 	   #:next-dur
@@ -33,7 +35,7 @@
 	   #:perc.kr
 	   #:del.kr
 	   #:asr.kr
-	   #:sel-pos.kr
+	   
 	   #:proxy-handle))
 
 (defpackage #:pc

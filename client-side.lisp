@@ -7,8 +7,13 @@
 (defun bpm (&optional bpm &key (relaunch nil) (lag 0))
   (if (not bpm) (clock-bpm)
     (progn
+      (proxy-handle :tempo-changed
+	  (let* ((tempo (in.kr (- (sc::server-options-num-control-bus (server-options *s*)) 2))))
+	    (line.kr 0 0 (+ lag 1) :act :free)
+	    [(impulse.kr 30) tempo])
+	(lambda (tempo)
+	  (clock-bpm (* 60 (reciprocal tempo)))))
       (metro bpm :relaunch relaunch :lag lag)
-      (clock-bpm bpm)
       (dolist (f *bpm-functions*)
 	(funcall f bpm :relaunch relaunch :lag lag)))))
 

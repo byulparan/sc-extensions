@@ -9,7 +9,7 @@
 	       #:named-readtables)
   :components ((:file "package")
 	       (:file "util")
+	       (:file "ugens")
 	       (:file "server-side")
 	       (:file "client-side")
-	       (:file "ugens")
 	       (:file "pc")))

@@ -29,6 +29,7 @@
 	   #:rrand
 	   #:sinr
 	   #:cosr
+	   #:once
 	   
 	   #:t-line.ar
 	   #:t-line.kr

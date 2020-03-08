@@ -49,4 +49,8 @@
 (defmacro cosr (offset gain ratio)
   `(+ ,offset (* ,gain (abs (cos (* pi ,(alexandria:symbolicate "BEAT") ,ratio))))))
 
+(defmacro once (form)
+  (let* ((result (eval form)))
+    `(quote ,result)))
+
 

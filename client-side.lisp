@@ -44,10 +44,10 @@
 	((listp n) (alexandria:random-elt n))))
 
 (defmacro sinr (offset gain ratio)
-  `(+ ,offset (* ,gain (abs (sin (* pi ,(alexandria:symbolicate "BEAT") ,ratio))))))
+  `(+ ,offset (* ,gain (sin (* pi ,(alexandria:symbolicate "BEAT") ,ratio)))))
 
 (defmacro cosr (offset gain ratio)
-  `(+ ,offset (* ,gain (abs (cos (* pi ,(alexandria:symbolicate "BEAT") ,ratio))))))
+  `(+ ,offset (* ,gain (cos (* pi ,(alexandria:symbolicate "BEAT") ,ratio)))))
 
 (defmacro once (form)
   (let* ((result (eval form)))

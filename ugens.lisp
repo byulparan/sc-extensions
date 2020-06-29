@@ -44,7 +44,7 @@
   (env-gen.kr (asr attk level rel) :gate gate :act act))
 
 (define-code env.kr (attk sustain-time rel level trig &key (act :no-action))
-  (env-gen.kr (env [0 level level 0] [attk sustain-time rel]) :gate trig :act act))
+  (env-gen.kr (env [0 level level 0] [attk sustain-time rel]) :gate (t-line.kr -1 1 .001 trig) :act act))
 
 (defmacro proxy-handle (key &optional action handle (to 1))
   (let* ((name (format nil "~a-HANDLE" (string-upcase key)))

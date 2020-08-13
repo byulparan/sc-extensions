@@ -54,3 +54,14 @@
     `(quote ,result)))
 
 
+(defmacro do-dolist (binding &body body)
+  (let* ((i (alexandria:symbolicate "I")))
+    `(loop for ,(caar binding) in ,@(cdar binding)
+	   for ,i from 0
+	   ,@(loop for (name form special) in (cdr binding)
+		   for namewrap = (intern (concatenate 'string (string-upcase name) "BIND"))
+		   append `(,(if special 'for 'with) ,namewrap = ,form
+			    for ,name = (if (listp ,namewrap) (nth (mod ,i (length ,namewrap)) ,namewrap)
+					  ,namewrap)))
+	   do (progn ,@body))))
+

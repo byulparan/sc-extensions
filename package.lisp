@@ -30,6 +30,7 @@
 	   #:sinr
 	   #:cosr
 	   #:once
+	   #:do-dolist
 	   
 	   #:t-line.ar
 	   #:t-line.kr

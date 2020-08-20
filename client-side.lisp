@@ -12,7 +12,7 @@
 	    (line.kr 0 0 (+ lag 1) :act :free)
 	    [(impulse.kr 30) tempo])
 	(lambda (tempo)
-	  (clock-bpm (/ 60.0d0 tempo)))
+	  (clock-bpm (* 1.0d0 (/ 60 tempo))))
 	*counter-group*)
       (metro bpm :relaunch relaunch :lag lag)
       (dolist (f *bpm-functions*)

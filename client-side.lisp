@@ -4,7 +4,7 @@
 
 (defvar *bpm-functions* nil)
 
-(defun bpm (&optional bpm &key (relaunch nil) (lag 0))
+(defun bpm (&optional bpm &key (relaunch nil) (lag 0) (pre-tick 1))
   (if (not bpm) (clock-bpm)
     (progn
       (proxy-handle :tempo-changed
@@ -13,8 +13,9 @@
 	    [(impulse.kr 30) tempo])
 	(lambda (tempo)
 	  (clock-bpm (* 1.0d0 (/ 60 tempo))))
-	*counter-group*)
-      (metro bpm :relaunch relaunch :lag lag)
+	:pos :after
+	:to :metro)
+      (metro bpm :relaunch relaunch :lag lag :pre-tick pre-tick)
       (dolist (f *bpm-functions*)
 	(funcall f bpm :relaunch relaunch :lag lag)))))
 

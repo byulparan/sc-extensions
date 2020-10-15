@@ -46,7 +46,7 @@
 (define-code env.kr (attk dur rel trig level &key (act :no-action))
   (env-gen.kr (env [0 level level 0] (* dur [attk (- 1.0 (+ attk rel)) rel])) :gate (t-line.kr -1 1 .001 trig) :act act))
 
-(defmacro proxy-handle (key &optional action handle (to 1))
+(defmacro proxy-handle (key &optional action handle &key (to 1) (pos :head))
   (let* ((name (format nil "~a-HANDLE" (string-upcase key)))
 	 (cmd (format nil "/~a" name))
 	 (key (intern name :keyword)))
@@ -65,6 +65,7 @@
 			result
 		      (send-reply.kr trig ,cmd values)))
 		    :to ,to
+		    :pos ,pos
 		    :fade .0))
       `(proxy ,key))))
 

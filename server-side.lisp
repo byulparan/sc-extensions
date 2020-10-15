@@ -42,13 +42,9 @@
     (cond ((and synth-node (sc::is-playing-p synth-node)) 1)
 	  (t (gate.kr 1 (tr div))))))
 
-(defvar *counter-group* nil)
-
-(defun metro (bpm &key (relaunch nil) (lag 0))
-  (if (and *counter-group* (not relaunch)) (ctrl :metro :bpm bpm :lag lag)
+(defun metro (bpm &key (relaunch nil) (lag 0) (pre-tick 1))
+  (if (and (sc:is-playing-p :metro) (not relaunch)) (ctrl :metro :bpm bpm :lag lag)
     (progn
-      (unless *counter-group*
-	(setf *counter-group* (make-group :to 0 :pos :head)))
       (when (sc:is-playing-p :metro)
 	(free :metro)
 	(sync *s*))
@@ -56,15 +52,12 @@
 	(with-controls ((bpm bpm) (lag 0.0) (reset 0 :tr))
 	  (let* ((bpm (var-lag.kr bpm lag))
 		 (tick (impulse.kr (* (/ bpm 60.0) *max-beat*)))
-		 (count (- (pulse-count.kr tick reset) 4)))
+		 (count (- (pulse-count.kr tick reset) pre-tick)))
 	    (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 3) tick)
 	    (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 2) (/ 60.0 bpm))
 	    (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 1) count)))
-	:to *counter-group*))))
-
-(defun tempo (bpm &key (relaunch nil) (lag 0))
-  (warn "`TEMPO` deprecated. use `METRO` instead.")
-  (metro bpm :relaunch relaunch :lag lag))
+	:pos :head
+	:to 0))))
 
 ;;; ==================================================================================================================
 

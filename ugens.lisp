@@ -40,11 +40,11 @@
 (define-code del.kr (in del)
   (delay-l.kr in 2.0 del))
 
-(define-code asr.kr (attk level rel gate &key (act :no-action))
-  (env-gen.kr (asr attk level rel) :gate gate :act act))
+(define-code asr.kr (attk level rel gate &optional (reset nil) &key (act :no-action))
+  (env-gen.kr (asr attk level rel) :gate (if reset (t-line.kr -1 1 .001 gate) gate) :act act))
 
-(define-code env.kr (attk dur rel trig level &key (act :no-action))
-  (env-gen.kr (env [0 level level 0] (* dur [attk (- 1.0 (+ attk rel)) rel])) :gate (t-line.kr -1 1 .001 trig) :act act))
+(define-code env.kr (attk dur rel trig level &optional (reset nil) &key (act :no-action))
+  (env-gen.kr (env [0 level level 0] (* dur [attk (- 1.0 (+ attk rel)) rel])) :gate (if reset (t-line.kr -1 1 .001 trig) trig) :act act))
 
 (defmacro proxy-handle (key &optional action handle &key (to 1) (pos :head))
   (let* ((name (format nil "~a-HANDLE" (string-upcase key)))

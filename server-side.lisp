@@ -42,7 +42,7 @@
     (cond ((and synth-node (sc::is-playing-p synth-node)) 1)
 	  (t (gate.kr 1 (tr div))))))
 
-(defun metro (bpm &key (relaunch nil) (lag 0) (pre-tick 1))
+(defun metro (bpm &key (relaunch nil) (lag 0) (pre-tick 0))
   (let* ((is-playing-p (sc:is-playing-p :metro)))
     (if (and is-playing-p (not relaunch)) (ctrl :metro :bpm bpm :lag lag)
       (progn
@@ -53,7 +53,7 @@
 	  (with-controls ((bpm bpm) (lag 0.0) (reset 0 :tr))
 	    (let* ((bpm (var-lag.kr bpm lag))
 		   (tick (impulse.kr (* (/ bpm 60.0) *max-beat*)))
-		   (count (- (pulse-count.kr tick reset) pre-tick)))
+		   (count (- (pulse-count.kr tick reset) 1 pre-tick)))
 	      (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 3) tick)
 	      (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 2) (/ 60.0 bpm))
 	      (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 1) count)))

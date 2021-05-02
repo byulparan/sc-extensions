@@ -4,7 +4,7 @@
 
 (defvar *bpm-functions* nil)
 
-(defun bpm (&optional bpm &key (relaunch nil) (lag 0) (pre-tick 1))
+(defun bpm (&optional bpm &key (relaunch nil) (lag 0) (pre-tick 0))
   (if (not bpm) (clock-bpm)
     (progn
       (proxy-handle :tempo-changed

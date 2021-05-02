@@ -20,7 +20,6 @@ and it implements `pc` library from Andrew Sorensen's [Extempore](http://digego.
 
 ;;; set bpm
 (bpm 60.0)
-
 (server-query-all-nodes) ;; You can look nodes state on scsynth server
 
 ;; run synth

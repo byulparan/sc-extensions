@@ -8,7 +8,7 @@ and it implements `pc` library from Andrew Sorensen's [Extempore](http://digego.
 
 ```cl
 ;;; load on cl-collider and sc-extensions
-(ql:quickload '(:sc :sc-extensions))
+(ql:quickload '(:cl-collider :sc-extensions))
 
 (in-package :sc-user)
 (use-package :sc-extensions)
@@ -18,9 +18,9 @@ and it implements `pc` library from Andrew Sorensen's [Extempore](http://digego.
 (setf *s* (make-external-server "Lisp-collider" :port 57880))
 (server-boot *s*)
 
+;;; set bpm
+(bpm 60.0)
 
-;;; set bpm and run `tempo` synth
-(tempo 60.0)
 (server-query-all-nodes) ;; You can look nodes state on scsynth server
 
 ;; run synth
@@ -34,24 +34,24 @@ and it implements `pc` library from Andrew Sorensen's [Extempore](http://digego.
                        (env-gen.kr (perc .0 .4 .2) :gate (tr 8)))))
 
 
-;;; chord progression every 8 beat 
+;;; chord progression every 4 beat 
 (proxy :foo
-  (pan2.ar (mix (sin-osc.ar (midicps (sel-pos.kr 1 8 [(pc:make-chord 40 80 4 (pc:diatonic 0 :^ :i7))
-						                              (pc:make-chord 40 80 4 (pc:diatonic 0 :^ :vi7))]))
+  (pan2.ar (mix (sin-osc.ar (midicps (sel-pos.kr .25 [(pc:make-chord 40 80 4 (pc:diatonic 0 :^ :i7))
+						      (pc:make-chord 40 80 4 (pc:diatonic 0 :^ :vi7))]))
 			    0 (env-gen.kr (perc .0 .4 .2) :gate (tr 8))))))
 
 ;;; modified to gate
 (proxy :foo
   (let* ((gate (g+ 4 8 [0 3 6])))
-    (pan2.ar (mix (sin-osc.ar (midicps (sel-pos.kr 1 8 [(pc:make-chord 40 80 4 (pc:diatonic 0 :^ :i7))
-						                            	(pc:make-chord 40 80 4 (pc:diatonic 0 :^ :vi7))]))
+    (pan2.ar (mix (sin-osc.ar (midicps (sel-pos.kr .25 [(pc:make-chord 40 80 4 (pc:diatonic 0 :^ :i7))
+						        (pc:make-chord 40 80 4 (pc:diatonic 0 :^ :vi7))]))
 			      0 (env-gen.kr (perc .0 .4 .2) :gate gate))))))
 
-;;; change tempo
-(tempo 72.0)
+;;; change bpm
+(bpm 72.0)
 
-;;; change tempo with lag time
-(tempo 88.0 :lag 8.0)
+;;; change bpm with lag time
+(bpm 88.0 :lag 8.0)
 
 ;;; grid base sequencing
 (proxy :foo
@@ -60,7 +60,7 @@ and it implements `pc` library from Andrew Sorensen's [Extempore](http://digego.
        (note [60 67 71])
        (decay [.4 1.0 .2]))
     (pan2.ar (sin-osc.ar (midicps note) 0
-			             (env-gen.kr (perc .0 decay .2) :gate gt)))))
+			 (env-gen.kr (perc .0 decay .2) :gate gt)))))
 
 ;;; polyphonic grid
 (proxy :foo
@@ -68,6 +68,5 @@ and it implements `pc` library from Andrew Sorensen's [Extempore](http://digego.
       ((gt [0 3 6])
        (note [60 67 71]))
     (pan2.ar (mix (sin-osc.ar (midicps note) 0
-			                  (env-gen.kr (perc .0 2.0 .2) :gate gt))))))
-
+			      (env-gen.kr (perc .0 2.0 .2) :gate gt))))))
 ```

@@ -67,3 +67,56 @@
 					  ,namewrap)))
 	   do (progn ,@body))))
 
+
+
+
+(defvar *schedule-object* (make-hash-table))
+
+(pushnew
+ (lambda ()
+   (setf *schedule-object* (make-hash-table)))
+ *stop-hooks*)
+
+(defstruct schedule-object
+  time running-p)
+
+(defmacro schedule (name (quant &key (ahead 0) (count +inf+)) &body body)
+  (alexandria:with-gensyms (func execute next-time sched-time obj sched-obj q-time)
+    (let* ((sym-beat (alexandria:symbolicate "BEAT"))
+	   (sym-dur (alexandria:symbolicate "DUR"))
+	   (sym-count (alexandria:symbolicate "SCHED-COUNT")))
+      `(let* ((,obj (make-schedule-object))
+	      (,func ,(when body
+			`(lambda (,sym-beat)
+			   #+sbcl (declare (sb-ext:muffle-conditions style-warning))
+			   (labels ((,execute (,sym-beat ,sym-count)
+				      (declare (ignorable ,sym-beat ,sym-count))
+				      (let* ((*in-scheduler* t)
+					     (,sched-obj (gethash ',name *schedule-object*))
+					     (,sched-time (schedule-object-time ,sched-obj)))
+					(if (< ,sym-count ,count)
+					    (when (or (eql ,sched-obj ,obj)
+						      (< ,sym-beat ,sched-time))
+					      ,(append (car body)
+						       `((let* ((,next-time (+ ,sym-beat ,sym-dur)))
+							   (when (or (eql ,sched-obj ,obj)
+								     (< ,next-time ,sched-time))
+							     (clock-add (- ,next-time ,ahead) #',execute ,next-time (+ ,sym-count 1)))))))
+					  (setf (schedule-object-running-p ,sched-obj) nil)))))
+			     (,execute ,sym-beat 0))))))
+	 (declare (ignorable ,func))
+	 (let* ((,q-time (if (typep sc::*s* 'sc::rt-server) (clock-quant ,quant) ,quant)))
+	   (setf (schedule-object-time ,obj) ,q-time)
+	   (setf (gethash ',name *schedule-object*) ,obj)
+	   ,@(when body
+	       `((setf (schedule-object-running-p ,obj) t)
+		 (clock-add (- ,q-time ,ahead) ,func ,q-time)))
+	   ',name)))))
+
+(defun schedule-status ()
+  (loop for key being the hash-key of *schedule-object*
+	  using (hash-value obj)
+	when (schedule-object-running-p obj)
+	  collect key))
+
+

@@ -31,6 +31,7 @@
 	   #:cosr
 	   #:once
 	   #:do-dolist
+	   #:schedule
 	   
 	   #:t-line.ar
 	   #:t-line.kr

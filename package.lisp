@@ -35,6 +35,7 @@
 	   
 	   #:t-line.ar
 	   #:t-line.kr
+	   #:t-gate.kr
 	   #:perc.kr
 	   #:del.kr
 	   #:asr.kr

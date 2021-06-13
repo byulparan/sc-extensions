@@ -34,6 +34,9 @@
 (define-code t-line.kr (start end dur gate)
   (env-gen.kr (env [0 start end] [0 dur]) :gate gate))
 
+(define-code t-gate.kr (dur trig &optional (adjust .9))
+  (env.kr .0 (* dur adjust) .0 trig  1))
+
 (define-code perc.kr (gate &optional (attack 0.01) (release 1.0) (level 1.0) (curve -4.0))
   (env-gen.kr (perc attack release level curve) :gate gate))
 

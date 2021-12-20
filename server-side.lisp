@@ -167,9 +167,7 @@
 						       `(latch.kr ,indx ,gate))
 						    ,(second x))))
 			      `(,(car x) (progn
-					   (send-reply.kr (sc::>~ ,gate 1)
-							  (format nil "/~s with-grid with duplicate number. it will be wrong works"
-								  sc::*temp-synth-name*))
+					   (send-reply.kr (sc::>~ ,gate 1) (format nil "with-grid dup beat"))
 					   ,(if (third x)
 						`(select.kr (gate.kr 1 ,gate) [,(third x) ,sel])
 					      `,sel)))))

@@ -20,6 +20,14 @@
       (dolist (f *bpm-functions*)
 	(funcall f bpm :relaunch relaunch :lag lag)))))
 
+
+
+(defun pp-synth (beat name &rest param &key &allow-other-keys)
+  (clock-add beat
+	     (lambda ()
+	       (at (sc::beats-to-secs (sc::tempo-clock *s*) beat)
+		 (apply (if (or (keywordp name) (typep name 'sc::node)) #'ctrl #'synth) name param)))))
+
 (defmacro pp (&body body)
   (let* ((sym-beat (alexandria:symbolicate "BEAT"))
 	 (sym-dur (alexandria:symbolicate "DUR"))
@@ -29,9 +37,9 @@
     (when has-dur-p (setf params (alexandria:remove-from-plist params :dur)))
     (if has-beat-offset 
 	`(let ((,sym-beat (+ ,sym-beat ,(car body))))
-	   (at-synth ,sym-beat ,(second body) ,@params
+	   (pp-synth ,sym-beat ,(second body) ,@params
 		     :dur (clock-dur ,(if has-dur-p has-dur-p sym-dur))))
-      `(at-synth ,sym-beat ,(car body) ,@params :dur (clock-dur ,(if has-dur-p has-dur-p sym-dur))))))
+      `(pp-synth ,sym-beat ,(car body) ,@params :dur (clock-dur ,(if has-dur-p has-dur-p sym-dur))))))
 
 (defmacro next-dur (beat new-value)
   (let ((sym-beat (alexandria:symbolicate "BEAT"))

@@ -30,6 +30,7 @@
 	   #:sinr
 	   #:cosr
 	   #:once
+	   #:nth-beat
 	   #:do-dolist
 	   #:schedule
 	   

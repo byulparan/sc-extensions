@@ -63,6 +63,9 @@
   (let* ((result (eval form)))
     `(quote ,result)))
 
+(defmacro nth-beat (dur list)
+  (let ((sym-beat (alexandria:symbolicate "BEAT")))
+    `(nth (mod (floor ,sym-beat ,dur) (length ,list)) ,list)))
 
 (defmacro do-dolist (binding &body body)
   (let* ((i (alexandria:symbolicate "I")))

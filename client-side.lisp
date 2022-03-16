@@ -80,10 +80,11 @@
 
 (defvar *schedule-object* (make-hash-table))
 
-(pushnew
- (lambda ()
-   (setf *schedule-object* (make-hash-table)))
- *stop-hooks*)
+(flet ((reset-sched-object ()
+	 (setf *schedule-object* (make-hash-table))))
+  (pushnew
+   #'reset-sched-object
+   *stop-hooks*))
 
 (defstruct schedule-object
   time running-p)

@@ -41,11 +41,6 @@
 		     :dur (clock-dur ,(if has-dur-p has-dur-p sym-dur))))
       `(pp-synth ,sym-beat ,(car body) ,@params :dur (clock-dur ,(if has-dur-p has-dur-p sym-dur))))))
 
-(defmacro next-dur (beat new-value)
-  (let ((sym-beat (alexandria:symbolicate "BEAT"))
-	(sym-dur (alexandria:symbolicate "DUR")))
-    `(if (zerop (mod (+ ,sym-beat ,sym-dur) ,beat)) ,new-value ,sym-dur)))
-
 (defun rrand (n &optional p)
   (cond (p (let* ((min (min n p))
 		  (max (max n p)))
@@ -66,19 +61,6 @@
 (defmacro nth-beat (dur list)
   (let ((sym-beat (alexandria:symbolicate "BEAT")))
     `(nth (mod (floor ,sym-beat ,dur) (length ,list)) ,list)))
-
-(defmacro do-dolist (binding &body body)
-  (let* ((i (alexandria:symbolicate "I")))
-    `(loop for ,(caar binding) in ,@(cdar binding)
-	   for ,i from 0
-	   ,@(loop for (name form special) in (cdr binding)
-		   for namewrap = (intern (concatenate 'string (string-upcase name) "BIND"))
-		   append `(,(if special 'for 'with) ,namewrap = ,form
-			    for ,name = (if (listp ,namewrap) (nth (mod ,i (length ,namewrap)) ,namewrap)
-					  ,namewrap)))
-	   do (progn ,@body))))
-
-
 
 
 (defvar *schedule-object* (make-hash-table))

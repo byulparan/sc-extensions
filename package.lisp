@@ -25,13 +25,11 @@
 	   #:t+
 	   #:bpm
 	   #:pp
-	   #:next-dur
 	   #:rrand
 	   #:sinr
 	   #:cosr
 	   #:once
 	   #:nth-beat
-	   #:do-dolist
 	   #:schedule
 	   
 	   #:t-line.ar

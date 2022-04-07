@@ -41,7 +41,7 @@
   (env-gen.kr (perc attack release level curve) :gate gate))
 
 (define-code del.kr (in del &optional (max-delay 2.0))
-  (delay-l.kr in max-delay del))
+  (delay-n.kr in max-delay del))
 
 (define-code asr.kr (attk level rel gate &optional (reset nil) &key (act :no-action))
   (env-gen.kr (asr attk level rel) :gate (if reset (t-line.kr -1 1 .001 gate) gate) :act act))

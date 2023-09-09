@@ -48,11 +48,12 @@
 	((numberp n) (random n))
 	((listp n) (alexandria:random-elt n))))
 
-(defmacro sinr (offset gain ratio)
-  `(+ ,offset (* ,gain (sin (* pi ,(alexandria:symbolicate "BEAT") ,ratio)))))
+(defmacro sinr (lo hi rate &optional (offset 0.0))
+  `(lin-lin (sin (* pi 2 (+ ,offset ,(alexandria:symbolicate "BEAT")) ,rate)) -1.0 1.0 ,lo ,hi))
 
-(defmacro cosr (offset gain ratio)
-  `(+ ,offset (* ,gain (cos (* pi ,(alexandria:symbolicate "BEAT") ,ratio)))))
+(defmacro cosr (lo hi rate &optional (offset 0.0))
+  `(lin-lin (cos (* pi 2 (+ ,offset ,(alexandria:symbolicate "BEAT")) ,rate)) -1.0 1.0 ,lo ,hi))
+
 
 (defmacro once (form)
   (let* ((result (eval form)))

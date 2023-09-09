@@ -79,7 +79,7 @@
   (alexandria:with-gensyms (func execute next-time sched-time obj sched-obj q-time)
     (let* ((sym-beat (alexandria:symbolicate "BEAT"))
 	   (sym-dur (alexandria:symbolicate "DUR"))
-	   (sym-count (alexandria:symbolicate "SCHED-COUNT")))
+	   (sym-count (alexandria:symbolicate "N")))
       `(let* ((,obj (make-schedule-object))
 	      (,func ,(when body
 			`(lambda (,sym-beat)

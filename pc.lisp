@@ -218,7 +218,7 @@
 (defun pc? (pitch pc)
   (consp (member (mod pitch 12) pc)))
 
-(defun quantize (pitch-in pc)
+(defun quantize (pitch-in &optional (pc sc-user::*scale*))
   (labels ((lp (inc pitch)
 	     (cond ((pc? (+ pitch inc) pc) (+ pitch inc))
 		   ((pc? (- pitch inc) pc) (- pitch inc))
@@ -244,7 +244,7 @@
 	(lp (funcall inc pitch 1) 0)))))
 
 
-(defun make-chord (lower upper number pc)
+(defun make-chord (lower upper number &optional (pc sc-user::*scale*))
   (let ((chord '()))
     (labels ((lp (l u n p)
 	       (if (< n 1) (mapcar #'identity (sort (remove -1 chord) #'<))

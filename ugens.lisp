@@ -12,7 +12,7 @@
 (define-code safe-tr (tr)
   (let* ((trg tr)
 	 (sel (gate.kr 1 trg)))
-    (select.kr sel [(env.kr .5 .001 .5 1 1) trg])))
+    (select.kr sel [(env.kr .0 .001 1.0 1 1) trg])))
 
 (define-code r+ (sig min max)
   (range sig min max))

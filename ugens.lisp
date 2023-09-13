@@ -58,11 +58,7 @@
 		  (add-reply-responder
 		   ,cmd
 		   (lambda (&rest args)
-		     (flet ((float-to-int (number)
-			      (multiple-value-bind (v fract)
-				  (floor number)
-				(if (zerop fract) v (+ v fract)))))
-		       (apply func (mapcar #'float-to-int (cddr args))))))
+		     (apply func (cddr args))))
 		  (proxy ,key
 		    (let ((result ,action))
 		      (destructuring-bind (trig &rest values)

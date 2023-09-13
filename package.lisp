@@ -31,6 +31,7 @@
 	   #:once
 	   #:nth-beat
 	   #:schedule
+	   #:with-lambda
 	   
 	   #:t-line.ar
 	   #:t-line.kr

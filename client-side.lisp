@@ -61,7 +61,8 @@
 
 (defmacro nth-beat (dur list)
   (let ((sym-beat (alexandria:symbolicate "BEAT")))
-    `(nth (mod (floor ,sym-beat ,dur) (length ,list)) ,list)))
+    (alexandria:once-only (list)
+      `(nth (mod (floor ,sym-beat ,dur) (length ,list)) ,list))))
 
 
 (defvar *schedule-object* (make-hash-table))

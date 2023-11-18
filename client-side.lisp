@@ -64,6 +64,23 @@
     (alexandria:once-only (list)
       `(nth (mod (floor ,sym-beat ,dur) (length ,list)) ,list))))
 
+(defmacro beat-count (&optional (len most-positive-fixnum) dur)
+  (let* ((sym-beat (alexandria:symbolicate "BEAT"))
+	 (sym-dur (alexandria:symbolicate "DUR")))
+    `(mod (floor ,sym-beat ,(if dur dur sym-dur)) ,len)))
+
+(defstruct box result)
+
+(defmacro latch (b form &optional (default form))
+  (let* ((box (make-box :result (eval default)))
+	 (beat (alexandria:symbolicate "BEAT"))
+	 (l (gensym)))
+    `(let* ((,l ,box))
+       (when (zerop (mod ,beat ,b))
+	 (setf (box-result ,l) ,form))
+       (box-result ,l))))
+
+
 
 (defvar *schedule-object* (make-hash-table))
 

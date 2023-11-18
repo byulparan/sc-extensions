@@ -30,6 +30,8 @@
 	   #:cosr
 	   #:once
 	   #:nth-beat
+	   #:beat-count
+	   #:latch
 	   #:schedule
 	   #:with-lambda
 	   

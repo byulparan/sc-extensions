@@ -47,7 +47,7 @@
 (define-code asr.kr (attk level rel gate &optional (reset nil) &key (act :no-action))
   (env-gen.kr (asr attk level rel) :gate (if reset (t-line.kr -1 1 .001 gate) gate) :act act))
 
-(define-code env.kr (attk dur rel trig level &optional (reset nil) &key (act :no-action))
+(define-code env.kr (attk dur rel trig level &key (reset nil) (act :no-action))
   (env-gen.kr (env [0 level level 0] (* dur [attk (- 1.0 (+ attk rel)) rel])) :gate (if reset (t-line.kr -1 1 .001 trig) trig) :act act))
 
 (defmacro proxy-handle (key &optional action handle &key (to 1) (pos :head))

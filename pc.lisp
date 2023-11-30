@@ -266,7 +266,7 @@
 		 (lp (+ i 1) (cdr lst))))))
     (lp 1 pc)))
 
-(defun quantize-list (lst pc)
+(defun quantize-list (lst &optional (pc sc-user::*scale*))
   (mapcar #'(lambda (i) (quantize i pc)) lst))
 
 

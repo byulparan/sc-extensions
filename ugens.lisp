@@ -32,8 +32,8 @@
 (define-code t-line.ar (start end dur gate)
   (env-gen.ar (env [0 start end] [0 dur]) :gate gate))
 
-(define-code t-line.kr (start end dur gate)
-  (env-gen.kr (env [0 start end] [0 dur]) :gate gate))
+(define-code t-line.kr (start end dur gate &optional (curve :lin))
+  (env-gen.kr (env [0 start end] [0 dur] [:lin curve]) :gate gate))
 
 (define-code t-gate.kr (dur trig &optional (adjust .9))
   (env.kr .0 (* dur adjust) .0 trig  1))
@@ -44,11 +44,12 @@
 (define-code del.kr (in del &optional (max-delay 2.0))
   (delay-n.kr in max-delay del))
 
-(define-code asr.kr (attk level rel gate &optional (reset nil) &key (act :no-action))
-  (env-gen.kr (asr attk level rel) :gate (if reset (t-line.kr -1 1 .001 gate) gate) :act act))
+(define-code asr.kr (attk level rel gate &key (curve -4.0) (reset nil) (act :no-action))
+  (env-gen.kr (asr attk level rel curve) :gate (if reset (t-line.kr -1 1 .001 gate) gate) :act act))
 
-(define-code env.kr (attk dur rel trig level &key (reset nil) (act :no-action))
-  (env-gen.kr (env [0 level level 0] (* dur [attk (- 1.0 (+ attk rel)) rel])) :gate (if reset (t-line.kr -1 1 .001 trig) trig) :act act))
+(define-code env.kr (attk dur rel trig level &key (curve :lin) (reset nil) (act :no-action))
+  (env-gen.kr (env [.0000001 level level .0000001] (* dur [attk (- 1.0 (+ attk rel)) rel]) curve) :gate (if reset (t-line.kr -1 1 .001 trig) trig) :act act))
+
 
 (defmacro proxy-handle (key &optional action handle &key (to 1) (pos :head))
   (let* ((name (format nil "~a-HANDLE" (string-upcase key)))

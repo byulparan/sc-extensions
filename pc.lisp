@@ -269,6 +269,12 @@
 (defun quantize-list (lst &optional (pc sc-user::*scale*))
   (mapcar #'(lambda (i) (quantize i pc)) lst))
 
+(defun q-list (start end &optional (scale sc-user::*scale*) keep-duplicate-p )
+  (let* ((list (pc:quantize-list (alexandria:iota (- end start) :start start) scale)))
+    (unless keep-duplicate-p
+      (setf list (remove-duplicates list)))
+    list))
+
 
 ;; ;; retrograde list
 ;; (define ivl:retrograde reverse)

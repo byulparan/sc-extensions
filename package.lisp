@@ -52,6 +52,7 @@
 	   #:make-chord
 	   #:degree
 	   #:quantize-list
+	   #:q-list
 	   #:transpose
 	   #:scale
 	   #:chord-to-scale

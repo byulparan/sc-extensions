@@ -50,6 +50,9 @@
 (define-code env.kr (attk dur rel trig level &key (curve :lin) (reset nil) (act :no-action))
   (env-gen.kr (env [.0000001 level level .0000001] (* dur [attk (- 1.0 (+ attk rel)) rel]) curve) :gate (if reset (t-line.kr -1 1 .001 trig) trig) :act act))
 
+(define-code coin.kr (trig coin true false)
+  (select.kr (< (t-rand.kr .0 1.0 trig) coin) [false true]))
+
 
 (defmacro proxy-handle (key &optional action handle &key (to 1) (pos :head))
   (let* ((name (format nil "~a-HANDLE" (string-upcase key)))

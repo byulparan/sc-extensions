@@ -42,6 +42,7 @@
 	   #:del.kr
 	   #:asr.kr
 	   #:env.kr
+	   #:coin.kr
 	   #:proxy-handle))
 
 (defpackage #:pc

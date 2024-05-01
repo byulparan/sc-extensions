@@ -130,7 +130,7 @@
 	 (sym-dur (alexandria:symbolicate "DUR"))
 	 (sym-count (alexandria:symbolicate "N")))
     `(lambda (,sym-beat ,sym-count)
-       (let ((,sym-dur ,dur))
+       (let ((,sym-dur (coerce ,dur 'double-float)))
 	 ,@body
 	 ,sym-dur))))
 

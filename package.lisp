@@ -34,6 +34,7 @@
 	   #:latch
 	   #:schedule
 	   #:with-lambda
+	   #:*scale*
 	   
 	   #:t-line.ar
 	   #:t-line.kr

@@ -1,5 +1,8 @@
 (in-package :pc)
 
+(defvar sc-extensions:*scale*)
+
+
 (defvar *diatonic-major*
    '((:i . (0 . :^))
      (:i6 . (0 . :^6))
@@ -218,7 +221,7 @@
 (defun pc? (pitch pc)
   (consp (member (mod pitch 12) pc)))
 
-(defun quantize (pitch-in &optional (pc sc-user::*scale*))
+(defun quantize (pitch-in &optional (pc sc-extensions:*scale*))
   (labels ((lp (inc pitch)
 	     (cond ((pc? (+ pitch inc) pc) (+ pitch inc))
 		   ((pc? (- pitch inc) pc) (- pitch inc))
@@ -244,7 +247,7 @@
 	(lp (funcall inc pitch 1) 0)))))
 
 
-(defun make-chord (lower upper number &optional (pc sc-user::*scale*))
+(defun make-chord (lower upper number &optional (pc sc-extensions:*scale*))
   (let ((chord '()))
     (labels ((lp (l u n p)
 	       (if (< n 1) (mapcar #'identity (sort (remove -1 chord) #'<))
@@ -266,10 +269,10 @@
 		 (lp (+ i 1) (cdr lst))))))
     (lp 1 pc)))
 
-(defun quantize-list (lst &optional (pc sc-user::*scale*))
+(defun quantize-list (lst &optional (pc sc-extensions:*scale*))
   (mapcar #'(lambda (i) (quantize i pc)) lst))
 
-(defun q-list (start end &optional (scale sc-user::*scale*) keep-duplicate-p )
+(defun q-list (start end &optional (scale sc-extensions:*scale*) keep-duplicate-p )
   (let* ((list (pc:quantize-list (alexandria:iota (- end start) :start start) scale)))
     (unless keep-duplicate-p
       (setf list (remove-duplicates list)))
@@ -301,6 +304,8 @@
 					 (lp (cdr l) (mod (+ current (car l)) 12) (cons current newlst)))))
 			      (lp (cdr (assoc type *scales*)) (mod root 12) '()))
     (error "Scale type not found ~a" *scales*)))
+
+(setf sc-extensions:*scale* (pc:scale 0 :ionian))
 
 (defun chord-to-scale (root type)
   (scale (mod (+ (cadr (assoc type *chord->scale*)) root) 12)

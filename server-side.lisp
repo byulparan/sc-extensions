@@ -65,9 +65,9 @@
 (defun pattern (buffer list &rest lists)
   (let ((all-data (append list (apply #'append lists))))
     (assert (>= (frames buffer) (length all-data)))
-    (buffer-setn buffer
-			(loop for i from 0 below (frames buffer)
-			      collect (nth (mod i (length all-data)) all-data)))))
+    (buffer-load buffer
+		 (loop for i from 0 below (frames buffer)
+		       collect (nth (mod i (length all-data)) all-data)))))
 
 (defmacro on-trigger ((cnt div &optional (rem 0)) &body body)
   (let ((cmd (format nil "/a~a" (get-internal-real-time))))

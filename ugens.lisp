@@ -29,11 +29,11 @@
 (define-code t+ (tr contents)
   (t-choose.kr tr contents))
 
-(define-code t-line.ar (start end dur gate)
-  (env-gen.ar (env [start start end] [0 dur]) :gate gate))
+(define-code t-line.ar (start end dur gate &optional (initial 0))
+  (env-gen.ar (env [initial start end] [0 dur]) :gate gate))
 
-(define-code t-line.kr (start end dur gate &optional (curve :lin) )
-  (env-gen.kr (env [start start end] [0 dur] [:lin curve]) :gate gate))
+(define-code t-line.kr (start end dur gate &optional (curve :lin) (initial 0))
+  (env-gen.kr (env [initial start end] [0 dur] [:lin curve]) :gate gate))
 
 (define-code t-gate.kr (dur trig &optional (adjust .9))
   (env.kr .0 (* dur adjust) .0 trig  1))

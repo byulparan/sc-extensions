@@ -8,11 +8,8 @@
 (define-code rand-tr (tr odds)
   (* tr (> odds (t-rand.kr .0 .9999 tr))))
 
-
 (define-code safe-tr (tr)
-  (let* ((trg tr)
-	 (sel (gate.kr 1 trg)))
-    (select.kr sel [(env.kr .0 .001 1.0 1 1) trg])))
+  (+ (line.kr 1 0 .001) tr))
 
 (define-code r+ (sig min max)
   (range sig min max))

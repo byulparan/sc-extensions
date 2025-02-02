@@ -81,6 +81,11 @@
        (box-result ,l))))
 
 
+(defun coin (n &optional (if-true-val t) (if-false-val nil)
+		 (state *random-state*))
+  (if (< (random 1.0 state) n) if-true-val if-false-val))
+
+
 
 (defvar *schedule-object* (make-hash-table))
 

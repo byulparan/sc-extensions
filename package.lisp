@@ -33,6 +33,7 @@
 	   #:beat-count
 	   #:latch
 	   #:coin
+	   #:nth-wrap
 	   #:schedule
 	   #:with-lambda
 	   #:*scale*

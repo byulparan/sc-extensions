@@ -86,6 +86,8 @@
   (if (< (random 1.0 state) n) if-true-val if-false-val))
 
 
+(setf (symbol-function 'nth-wrap) #'sc::nth-wrap)
+
 
 (defvar *schedule-object* (make-hash-table))
 

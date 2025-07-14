@@ -45,7 +45,7 @@
   (cond (p (let* ((min (min n p))
 		  (max (max n p)))
 	     (+ min (random (- max (- min (if (every #'integerp (list n p)) 1 0)))))))
-	((numberp n) (random n))
+	((numberp n) (rrand 0 n))
 	((listp n) (alexandria:random-elt n))))
 
 (defmacro sinr (lo hi rate &optional (offset 0.0))

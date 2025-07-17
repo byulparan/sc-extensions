@@ -128,7 +128,7 @@
 	 (setf (gethash ',name *schedule-object*) ,obj)
 	 ,@(when function
 	     `((setf (schedule-object-running-p ,obj) t)
-	       (clock-add (- ,q-time ,ahead) ,func ,q-time)))
+	       (clock-add (- ,q-time ,ahead) ,func (rationalize ,q-time))))
 	 ',name))))
 
 
@@ -137,7 +137,7 @@
 	 (sym-dur (alexandria:symbolicate "DUR"))
 	 (sym-count (alexandria:symbolicate "N")))
     `(lambda (,sym-beat ,sym-count)
-       (let ((,sym-dur (coerce ,dur 'double-float)))
+       (let ((,sym-dur (rationalize ,dur)))
 	 ,@body
 	 ,sym-dur))))
 

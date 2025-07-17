@@ -67,7 +67,7 @@
 (defmacro beat-count (&optional (len most-positive-fixnum) dur)
   (let* ((sym-beat (alexandria:symbolicate "BEAT"))
 	 (sym-dur (alexandria:symbolicate "DUR")))
-    `(mod (floor ,sym-beat ,(if dur dur sym-dur)) ,len)))
+    `(mod (round ,sym-beat ,(if dur dur sym-dur)) ,len)))
 
 (defstruct box result)
 

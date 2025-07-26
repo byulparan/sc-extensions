@@ -135,9 +135,11 @@
 (defmacro with-lambda ((dur) &body body)
   (let* ((sym-beat (alexandria:symbolicate "BEAT"))
 	 (sym-dur (alexandria:symbolicate "DUR"))
-	 (sym-count (alexandria:symbolicate "N")))
+	 (sym-count (alexandria:symbolicate "N"))
+	 (sym-tick (alexandria:symbolicate "TICK")))
     `(lambda (,sym-beat ,sym-count)
-       (let ((,sym-dur (rationalize ,dur)))
+       (let* ((,sym-dur (rationalize ,dur))
+	      (,sym-tick (beat-count)))
 	 ,@body
 	 ,sym-dur))))
 

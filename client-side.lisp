@@ -6,19 +6,20 @@
 (defun bpm (&optional bpm &key (relaunch nil) (lag 0) (pre-tick 0))
   (unless (is-playing-p :metro)
     (metro 60))
-  (if (not bpm) (clock-bpm)
-    (progn
-      (proxy-handle :bpm-changed
-	  (let* ((tempo (in.kr (- (sc::server-options-num-control-bus (server-options *s*)) 2))))
-	    (line.kr 0 0 (+ lag 1) :act :free)
-	    [(impulse.kr 30) tempo])
-	(lambda (tempo)
-	  (clock-bpm (* 1.0d0 (/ 60 tempo))))
-	:to :metro
-	:pos :after)
-      (metro bpm :relaunch relaunch :lag lag :pre-tick pre-tick)
-      (dolist (f *bpm-functions*)
-	(funcall f bpm :relaunch relaunch :lag lag)))))
+  (let* ((tempo-bus (- (sc::server-options-num-control-bus (server-options *s*)) 2)))
+    (if (not bpm) (* 60 (reciprocal (control-get tempo-bus)))
+      (progn
+	(proxy-handle :bpm-changed
+	    (let* ((tempo (in.kr tempo-bus)))
+	      (line.kr 0 0 (+ lag 1) :act :free)
+	      [(impulse.kr 30) tempo])
+	  (lambda (tempo)
+	    (clock-bpm (* 1.0d0 (/ 60 tempo))))
+	  :to :metro
+	  :pos :after)
+	(metro bpm :relaunch relaunch :lag lag :pre-tick pre-tick)
+	(dolist (f *bpm-functions*)
+	  (funcall f bpm :relaunch relaunch :lag lag))))))
 
 
 

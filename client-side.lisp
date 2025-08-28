@@ -49,6 +49,14 @@
 	((numberp n) (rrand 0 n))
 	((listp n) (alexandria:random-elt n))))
 
+
+(defun exp-rand (lo hi)
+  "Generate a random number with exponential distribution between lo and hi."
+  (unless (and (plusp lo) (plusp hi) (< lo hi))
+    (error "lo and hi must be positive, and lo must be less than hi"))
+  (* lo (exp (* (log (/ hi lo)) (random 1.0)))))
+
+
 (defmacro sinr (lo hi rate &optional (offset 0.0))
   `(lin-lin (sin (* pi 2 (+ ,offset ,(alexandria:symbolicate "BEAT")) ,rate)) -1.0 1.0 ,lo ,hi))
 

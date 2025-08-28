@@ -26,6 +26,7 @@
 	   #:bpm
 	   #:pp
 	   #:rrand
+	   #:exp-rand
 	   #:sinr
 	   #:cosr
 	   #:once

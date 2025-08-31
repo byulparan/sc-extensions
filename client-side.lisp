@@ -50,11 +50,20 @@
 	((listp n) (alexandria:random-elt n))))
 
 
-(defun exp-rand (lo hi)
-  "Generate a random number with exponential distribution between lo and hi."
-  (unless (and (plusp lo) (plusp hi) (< lo hi))
-    (error "lo and hi must be positive, and lo must be less than hi"))
-  (* lo (exp (* (log (/ hi lo)) (random 1.0)))))
+(defun exp-rand (lo hi &optional (alpha 1.0))
+  "Exponential random between lo and hi, slope controlled by alpha.
+   alpha=1 → normal ExpRand
+   alpha<1 → bias towards hi
+   alpha>1 → bias towards lo"
+  (unless (> hi lo)
+    (error "hi must be greater than lo"))
+  (when (<= lo 0)
+    (error "lo must be greater than 0 for ExpRand"))
+  (when (< alpha 0)
+    (error "alpha must not be less than 0 for ExpRand"))
+  (let* ((u (random 1.0))
+         (biased-u (expt u alpha)))
+    (* lo (expt (/ hi lo) biased-u))))
 
 
 (defmacro sinr (lo hi rate &optional (offset 0.0))

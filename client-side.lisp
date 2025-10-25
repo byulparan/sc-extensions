@@ -125,6 +125,7 @@
        (flet ((,(alexandria:symbolicate "SCHED-STOP") ()
 		(setf ,halt nil)
 		(setf (schedule-object-running-p (gethash ',name *schedule-object*)) nil)))
+	 (declare (ignorable (function ,(alexandria:symbolicate "SCHED-STOP"))))
 	 (let* ((,obj (make-schedule-object))
 		(,body-fun ,function)
 		(,func ,(when function

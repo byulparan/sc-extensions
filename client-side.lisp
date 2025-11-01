@@ -138,7 +138,7 @@
 					  (if (< ,sym-count ,count)
 					      (when (or (eql ,sched-obj ,obj)
 							(< ,sym-beat ,sched-time))
-						(let* ((,sym-dur (funcall ,body-fun ,sym-beat ,sym-count)))
+						(let* ((,sym-dur (rationalize (funcall ,body-fun ,sym-beat ,sym-count))))
 						  (let* ((,next-time (+ ,sym-beat ,sym-dur)))
 						    (when (and ,halt
 							       (or (eql ,sched-obj ,obj)
@@ -162,7 +162,7 @@
 	 (sym-count (alexandria:symbolicate "N"))
 	 (sym-tick (alexandria:symbolicate "TICK")))
     `(lambda (,sym-beat ,sym-count)
-       (let* ((,sym-dur (rationalize ,dur))
+       (let* ((,sym-dur ,dur)
 	      (,sym-tick (beat-count)))
 	 ,@body
 	 ,sym-dur))))

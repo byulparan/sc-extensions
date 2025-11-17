@@ -122,6 +122,7 @@
 (defmacro schedule (name (quant &key (ahead 0) (count +inf+)) &optional function)
   (alexandria:with-gensyms (func execute next-time sched-time obj sched-obj q-time sym-beat sym-dur sym-count body-fun halt)
     `(let* ((,halt t))
+       (declare (ignorable ,halt))
        (flet ((,(alexandria:symbolicate "SCHED-STOP") ()
 		(setf ,halt nil)
 		(setf (schedule-object-running-p (gethash ',name *schedule-object*)) nil)))
@@ -146,7 +147,7 @@
 						      (clock-add (- ,next-time ,ahead) #',execute ,next-time (+ ,sym-count 1))))))
 					    (setf (schedule-object-running-p ,sched-obj) nil)))))
 			       (,execute ,sym-beat 0))))))
-	   (declare (ignorable ,func))
+	   (declare (ignorable ,body-fun ,func))
 	   (let* ((,q-time (if (typep sc::*s* 'sc::rt-server) (clock-quant ,quant) ,quant)))
 	     (setf (schedule-object-time ,obj) ,q-time)
 	     (setf (gethash ',name *schedule-object*) ,obj)
@@ -162,8 +163,10 @@
 	 (sym-count (alexandria:symbolicate "N"))
 	 (sym-tick (alexandria:symbolicate "TICK")))
     `(lambda (,sym-beat ,sym-count)
+       (declare (ignorable ,sym-count))
        (let* ((,sym-dur ,dur)
 	      (,sym-tick (beat-count)))
+	 (declare (ignorable ,sym-tick))
 	 ,@body
 	 ,sym-dur))))
 

@@ -50,6 +50,9 @@
 (define-code coin.kr (trig coin true false)
   (select.kr (< (t-rand.kr .0 1.0 trig) coin) [false true]))
 
+(define-code t-quant.kr (lo hi trig &optional (pc *scale*))
+  (t+ trig (remove-duplicates (pc:quantize-list (loop for i from lo to hi collect i) pc))))
+
 
 (defmacro proxy-handle (key &optional action handle &key (to 1) (pos :head))
   (let* ((name (format nil "~a-HANDLE" (string-upcase key)))

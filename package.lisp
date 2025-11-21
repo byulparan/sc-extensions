@@ -47,6 +47,7 @@
 	   #:asr.kr
 	   #:env.kr
 	   #:coin.kr
+	   #:t-quant.kr
 	   #:proxy-handle))
 
 (defpackage #:pc

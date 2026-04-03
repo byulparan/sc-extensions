@@ -9,18 +9,18 @@
   (let* ((tempo-bus (- (sc::server-options-num-control-bus (server-options *s*)) 2)))
     (if (not bpm) (clock-bpm)
       (progn
-	(proxy-handle :bpm-changed
-	    (let* ((tempo (in.kr tempo-bus)))
-	      (line.kr 0 0 (+ lag 1) :act :free)
-	      [(impulse.kr 30) tempo])
-	  (lambda (tempo)
-	    (clock-bpm (* 1.0d0 (/ 60 tempo))))
-	  :to :metro
-	  :pos :after)
+	(if (zerop lag) (clock-bpm bpm)
+	  (proxy-handle :bpm-changed
+	      (let* ((tempo (in.kr tempo-bus)))
+		(line.kr 0 0 (+ lag 1) :act :free)
+		[(impulse.kr 30) tempo])
+	    (lambda (tempo)
+	      (clock-bpm (* 1.0d0 (/ 60 tempo))))
+	    :to :metro
+	    :pos :after))
 	(metro bpm :relaunch relaunch :lag lag)
 	(dolist (f *bpm-functions*)
-	  (funcall f bpm :relaunch relaunch :lag lag))
-	(sync)))))
+	  (funcall f bpm :relaunch relaunch :lag lag))))))
 
 
 

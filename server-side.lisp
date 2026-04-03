@@ -9,8 +9,8 @@
 
 (define-code metro-tr (div)
   (sc::*~ (== 0 (sc::floor~ (sc::mod~ (in.kr (1- (sc::server-options-num-control-bus (server-options *s*))))
-					 (sc::/~ *max-beat* div))))
-	      (in.kr (- (sc::server-options-num-control-bus (server-options *s*)) 3))))
+				      (sc::/~ *max-beat* div))))
+	  (in.kr (- (sc::server-options-num-control-bus (server-options *s*)) 3))))
 
 (defun tr (div)
   (if *tr-function* (funcall *tr-function* div)
@@ -18,7 +18,7 @@
 
 (define-code metro-cnt (div)
   (sc::floor~ (sc::/~ (in.kr (1- (sc::server-options-num-control-bus (server-options *s*))))
-			  (sc::/~ *max-beat* div))))
+		      (sc::/~ *max-beat* div))))
 
 (defun cnt (div)
   (if *cnt-function* (funcall *cnt-function* div)
@@ -42,7 +42,7 @@
     (cond ((and synth-node (sc::is-playing-p synth-node)) 1)
 	  (t (gate.kr 1 (tr div))))))
 
-(defun metro (bpm &key (relaunch nil) (lag 0) (pre-tick 0))
+(defun metro (bpm &key (relaunch nil) (lag 0) (reset-count +inf+))
   (let* ((is-playing-p (sc:is-playing-p :metro)))
     (if (and is-playing-p (not relaunch)) (ctrl :metro :bpm bpm :lag lag)
       (progn
@@ -50,10 +50,12 @@
 	  (free :metro)
 	  (sync *s*))
 	(proxy :metro
-	  (with-controls ((bpm bpm) (lag 0.0) (reset 0 :tr))
+	  (with-controls ((bpm bpm) (lag 0.0))
 	    (let* ((bpm (var-lag.kr bpm lag))
 		   (tick (impulse.kr (* (/ bpm 60.0) *max-beat*)))
-		   (count (- (pulse-count.kr tick reset) 1 pre-tick)))
+		   (count (- (pulse-count.kr tick (== (in.kr (- (sc::server-options-num-control-bus (server-options *s*)) 1))
+						      (- (* *max-beat* reset-count) 1)))
+			     1)))
 	      (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 3) tick)
 	      (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 2) (/ 60.0 bpm))
 	      (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 1) count)))
@@ -73,10 +75,10 @@
   (let ((cmd (format nil "/a~a" (get-internal-real-time))))
     `(progn
        (add-reply-responder ,cmd
-			    (lambda (a b c)
-			      (declare (ignore a b c))
-			      (unwind-protect (progn ,@body)
-				(remove-reply-responder ,cmd))))
+	 (lambda (a b c)
+	   (declare (ignore a b c))
+	   (unwind-protect (progn ,@body)
+	     (remove-reply-responder ,cmd))))
        (play
 	(let ((et (* (tr ,cnt) (== ,rem (mod (cnt ,cnt) ,div)))))
 	  (send-reply.kr et ,cmd 0)

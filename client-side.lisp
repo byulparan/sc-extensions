@@ -19,7 +19,8 @@
 	  :pos :after)
 	(metro bpm :relaunch relaunch :lag lag)
 	(dolist (f *bpm-functions*)
-	  (funcall f bpm :relaunch relaunch :lag lag))))))
+	  (funcall f bpm :relaunch relaunch :lag lag))
+	(sync)))))
 
 
 

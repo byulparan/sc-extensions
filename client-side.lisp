@@ -27,7 +27,7 @@
 (defun pp-synth (beat name &rest param &key &allow-other-keys)
   (clock-add beat
 	     (lambda ()
-	       (at (sc::beats-to-secs (sc::tempo-clock *s*) beat)
+	       (at-beat beat
 		 (apply (if (or (keywordp name) (typep name 'sc::node)) #'ctrl #'synth) name param)))))
 
 (defmacro pp (&body body)

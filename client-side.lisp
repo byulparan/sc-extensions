@@ -127,11 +127,12 @@
 		(setf ,halt nil)
 		(setf (schedule-object-running-p (gethash ',name *schedule-object*)) nil)))
 	 (declare (ignorable (function ,(alexandria:symbolicate "SCHED-STOP"))))
+	 (declare (sb-ext:muffle-conditions style-warning))
 	 (let* ((,obj (make-schedule-object))
 		(,body-fun ,function)
 		(,func ,(when function
 			  `(lambda (,sym-beat)
-			     #+sbcl (declare (sb-ext:muffle-conditions style-warning))
+			     
 			     (labels ((,execute (,sym-beat ,sym-count)
 					(declare (ignorable ,sym-beat ,sym-count))
 					(let* ((,sched-obj (gethash ',name *schedule-object*))

@@ -91,10 +91,9 @@
 (defstruct box result)
 
 (defmacro latch (b form &optional (default form))
-  (let* ((box (make-box :result (eval default)))
-	 (beat (alexandria:symbolicate "BEAT"))
+  (let* ((beat (alexandria:symbolicate "BEAT"))
 	 (l (gensym)))
-    `(let* ((,l ,box))
+    `(let* ((,l (load-time-value (make-box :result ,default))))
        (when (zerop (mod ,beat ,b))
 	 (setf (box-result ,l) ,form))
        (box-result ,l))))

@@ -46,6 +46,7 @@
 	   #:del.kr
 	   #:asr.kr
 	   #:env.kr
+	   #:env.ar
 	   #:coin.kr
 	   #:t-quant.kr
 	   #:proxy-handle))

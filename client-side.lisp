@@ -132,7 +132,6 @@
 		(,body-fun ,function)
 		(,func ,(when function
 			  `(lambda (,sym-beat)
-			     
 			     (labels ((,execute (,sym-beat ,sym-count)
 					(declare (ignorable ,sym-beat ,sym-count))
 					(let* ((,sched-obj (gethash ',name *schedule-object*))

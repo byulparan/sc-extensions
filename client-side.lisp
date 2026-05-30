@@ -40,8 +40,8 @@
     (if has-beat-offset 
 	`(let ((,sym-beat (+ ,sym-beat ,(car body))))
 	   (pp-synth ,sym-beat ,(second body) ,@params
-		     :dur (clock-dur ,(if has-dur-p has-dur-p sym-dur))))
-      `(pp-synth ,sym-beat ,(car body) ,@params :dur (clock-dur ,(if has-dur-p has-dur-p sym-dur))))))
+		     :dur (beat-dur ,(if has-dur-p has-dur-p sym-dur))))
+      `(pp-synth ,sym-beat ,(car body) ,@params :dur (beat-dur ,(if has-dur-p has-dur-p sym-dur))))))
 
 (defun rrand (n &optional p)
   (cond (p (let* ((min (min n p))

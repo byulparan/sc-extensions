@@ -160,13 +160,10 @@
 (defmacro with-lambda ((dur) &body body)
   (let* ((sym-beat (alexandria:symbolicate "BEAT"))
 	 (sym-dur (alexandria:symbolicate "DUR"))
-	 (sym-count (alexandria:symbolicate "N"))
-	 (sym-tick (alexandria:symbolicate "TICK")))
+	 (sym-count (alexandria:symbolicate "TICK")))
     `(lambda (,sym-beat ,sym-count)
        (declare (ignorable ,sym-count))
-       (let* ((,sym-dur ,dur)
-	      (,sym-tick (beat-count)))
-	 (declare (ignorable ,sym-tick))
+       (let* ((,sym-dur ,dur))
 	 ,@body
 	 ,sym-dur))))
 

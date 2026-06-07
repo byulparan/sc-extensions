@@ -46,7 +46,7 @@
 (defun rrand (n &optional p)
   (cond (p (let* ((min (min n p))
 		  (max (max n p)))
-	     (+ min (random (- max (- min (if (every #'integerp (list n p)) 1 0)))))))
+	     (+ min (random (- max min)))))
 	((numberp n) (rrand 0 n))
 	((listp n) (alexandria:random-elt n))))
 

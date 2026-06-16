@@ -164,8 +164,9 @@
     `(lambda (,sym-beat ,sym-count)
        (declare (ignorable ,sym-count))
        (let* ((,sym-dur ,dur))
-	 ,@body
-	 ,sym-dur))))
+	 (when (plusp ,sym-dur)
+	   ,@body)
+	 (abs ,sym-dur)))))
 
 (defun schedule-status ()
   (loop for key being the hash-key of *schedule-object*

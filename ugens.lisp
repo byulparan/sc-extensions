@@ -36,13 +36,13 @@
   (env.kr .0 (* dur adjust) .0 trig  1))
 
 (define-code perc.kr (gate &optional (attack 0.01) (release 1.0) (level 1.0) (curve -4.0))
-  (env-gen.kr (perc attack release level curve) :gate gate))
+  (env-gen.kr (env-perc attack release level curve) :gate gate))
 
 (define-code del.kr (in del &optional (max-delay 2.0))
   (delay-n.kr in max-delay del))
 
 (define-code asr.kr (attk level rel gate &key (curve -4.0) (reset nil) (act :no-action))
-  (env-gen.kr (asr attk level rel curve) :gate (if reset (t-line.kr -1 1 .001 gate) gate) :act act))
+  (env-gen.kr (env-asr attk level rel curve) :gate (if reset (t-line.kr -1 1 .001 gate) gate) :act act))
 
 (define-code env.kr (attk dur rel trig level &key (curve :lin) (reset nil) (act :no-action))
   (env-gen.kr (env [.0000001 level level .0000001] (* dur [attk (- 1.0 (+ attk rel)) rel]) curve) :gate (if reset (t-line.kr -1 1 .001 trig) trig) :act act))

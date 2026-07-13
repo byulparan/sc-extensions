@@ -60,7 +60,7 @@
 	      (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 2) (/ 60.0 bpm))
 	      (out.kr (- (sc::server-options-num-control-bus (server-options *s*)) 1) count)))
 	  :pos :head
-	  :to 0)))))
+	  :to 1)))))
 
 ;;; ==================================================================================================================
 

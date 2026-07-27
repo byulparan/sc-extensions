@@ -36,6 +36,7 @@
 	   #:coin
 	   #:nth-wrap
 	   #:schedule
+	   #:seq
 	   #:with-lambda
 	   #:*scale*
 	   

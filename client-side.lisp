@@ -159,12 +159,23 @@
 	     ',name))))))
 
 
+(defmacro seq (pattern)
+  `(let* ((next-beat (load-time-value (cons nil nil)))
+	  (get-value
+	   (lambda ()
+	     (unless (car next-beat)
+	       (setf (car next-beat) (alexandria:ensure-cons ,pattern)))
+	     (let* ((tmp (caar next-beat)))
+	       (setf (car next-beat) (cdar next-beat))
+	       tmp))))
+     (funcall get-value)))
+
 (defmacro with-lambda ((dur) &body body)
   (let* ((sym-beat (alexandria:symbolicate "BEAT"))
 	 (sym-dur (alexandria:symbolicate "DUR"))
 	 (sym-count (alexandria:symbolicate "TICK")))
     `(lambda (,sym-beat ,sym-count)
-       (let* ((,sym-dur ,dur))
+       (let* ((,sym-dur (seq ,dur)))
 	 (when (plusp ,sym-dur)
 	   ,@body)
 	 (abs ,sym-dur)))))

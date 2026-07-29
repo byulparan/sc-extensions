@@ -1,7 +1,7 @@
 (defpackage #:sc-extensions
   (:use #:cl #:sc)
   (:export #:define-code
-	   
+	   #:load-serum-wavetables
 	   #:tr
 	   #:cnt
 	   #:gate-lane

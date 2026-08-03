@@ -176,9 +176,9 @@
 	 (sym-count (alexandria:symbolicate "TICK")))
     `(lambda (,sym-beat ,sym-count)
        (let* ((,sym-dur (seq ,dur)))
-	 (when (plusp ,sym-dur)
+	 (when (or (symbolp ,sym-dur) (plusp ,sym-dur))
 	   ,@body)
-	 (abs ,sym-dur)))))
+	 (if (symbolp ,sym-dur) 1 (abs ,sym-dur))))))
 
 (defun schedule-status ()
   (loop for key being the hash-key of *schedule-object*

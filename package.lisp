@@ -39,6 +39,7 @@
 	   #:seq
 	   #:with-lambda
 	   #:*scale*
+	   #:*root*
 	   
 	   #:t-line.ar
 	   #:t-line.kr

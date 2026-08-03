@@ -1,5 +1,6 @@
 (in-package :pc)
 
+(defvar sc-extensions:*root* 0)
 (defvar sc-extensions:*scale*)
 
 

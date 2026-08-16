@@ -58,7 +58,7 @@
   (t+ trig (remove-duplicates (pc:quantize-list (loop for i from lo to hi collect i) pc))))
 
 
-(defmacro proxy-handle (key &optional action handle &key (to 1) (pos :head))
+(defmacro proxy-handle (key &optional action handle &key to (pos :head))
   (let* ((name (format nil "~a-HANDLE" (string-upcase key)))
 	 (cmd (format nil "/~a" name))
 	 (key (intern name :keyword)))

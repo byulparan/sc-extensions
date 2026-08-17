@@ -120,11 +120,12 @@
 
 
 (defmacro schedule (name (quant &key at (ahead 0) (count +inf+)) &optional function)
-  (alexandria:with-gensyms (func execute next-time sched-time obj sched-obj q-time sym-beat sym-dur sym-count halt sched-block)
+  (alexandria:with-gensyms (func execute next-time sched-time obj sched-obj q-time sym-beat sym-dur sym-count halt sched-block function-obj)
     `(let* ((,halt t))
        (declare (ignorable ,halt)
 		(sb-ext:muffle-conditions style-warning))
        (let* ((,obj (make-schedule-object))
+	      (,function-obj ,function)
 	      (,func ,(when function
 			`(lambda (,sym-beat)
 			   (labels ((,execute (,sym-beat ,sym-count)
@@ -139,7 +140,7 @@
 									   (setf ,halt nil)
 									   (setf (schedule-object-running-p (gethash ',name *schedule-object*)) nil)
 									   (return-from ,sched-block 0)))
-								    (funcall ,function ,sym-beat ,sym-count))))))
+								    (funcall ,function-obj ,sym-beat ,sym-count))))))
 						(let* ((,next-time (+ ,sym-beat ,sym-dur)))
 						  (when (and ,halt
 							     (or (eql ,sched-obj ,obj)

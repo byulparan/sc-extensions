@@ -6,7 +6,8 @@
       ,@body)))
 
 
-(defun load-serum-wavetables (path) 
+(defun load-serum-wavetables (path)
+  "Load wavetable to serum format(2048-frames)."
   (let* ((tab (buffer-read path))
 	 (data (buffer-to-array tab :channels 0))
 	 (size 2048))

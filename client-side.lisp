@@ -43,8 +43,9 @@
 		     :dur (beat-dur ,(if has-dur-p has-dur-p sym-dur))))
       `(pp-synth ,sym-beat ,(car body) ,@params :dur (beat-dur ,(if has-dur-p has-dur-p sym-dur))))))
 
-(defun rrand (n &optional p)
-  (cond (p (let* ((min (min n p))
+(defun rrand (n &optional p trunc)
+  (cond (trunc (trunc (rrand n p) trunc))
+	(p (let* ((min (min n p))
 		  (max (max n p)))
 	     (+ min (random (- max (- min (if (every #'integerp (list n p)) 1 0)))))))
 	((numberp n) (rrand 0 n))

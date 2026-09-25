@@ -172,6 +172,8 @@
 	       tmp))))
      (funcall get-value)))
 
+
+
 (defmacro with-lambda ((dur) &body body)
   (let* ((sym-beat (alexandria:symbolicate "BEAT"))
 	 (sym-dur (alexandria:symbolicate "DUR"))
@@ -179,7 +181,11 @@
     `(lambda (,sym-beat ,sym-count)
        (let* ((,sym-dur (seq ,dur)))
 	 (when (or (symbolp ,sym-dur) (plusp ,sym-dur))
-	   ,@body)
+	   ,@(let ((sc::*synthdef-function-table* '((+ sc::+~)
+						    (- sc::-~)
+						    (* sc::*~)
+						    (/ sc::/~))))
+	       (sc::convert-code body)))
 	 (if (symbolp ,sym-dur) 1 (abs ,sym-dur))))))
 
 (defun schedule-status ()

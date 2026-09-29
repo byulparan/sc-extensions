@@ -52,19 +52,20 @@
 	((listp n) (alexandria:random-elt n))))
 
 
+
 (defun exp-rand (lo hi &optional (alpha 1.0))
-  "Exponential random between lo and hi, slope controlled by alpha.
+  "Exponential random between lo and hi.
    alpha=1 → normal ExpRand
-   alpha<1 → bias towards hi
-   alpha>1 → bias towards lo"
+   alpha<1 → bias towards lo
+   alpha>1 → bias towards hi"
   (unless (> hi lo)
     (error "hi must be greater than lo"))
   (when (<= lo 0)
     (error "lo must be greater than 0 for ExpRand"))
-  (when (< alpha 0)
-    (error "alpha must not be less than 0 for ExpRand"))
+  (when (<= alpha 0)
+    (error "alpha must be greater than 0 for ExpRand"))
   (let* ((u (random 1.0))
-         (biased-u (expt u alpha)))
+         (biased-u (expt u (/ 1.0 alpha))))
     (* lo (expt (/ hi lo) biased-u))))
 
 

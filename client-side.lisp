@@ -125,7 +125,7 @@
   (alexandria:with-gensyms (func execute next-time sched-time obj sched-obj q-time sym-beat sym-dur sym-count halt sched-block function-obj)
     `(let* ((,halt t))
        (declare (ignorable ,halt)
-		(sb-ext:muffle-conditions style-warning))
+		#+sbcl(sb-ext:muffle-conditions style-warning))
        (let* ((,obj (make-schedule-object))
 	      (,function-obj ,function)
 	      (,func ,(when function
